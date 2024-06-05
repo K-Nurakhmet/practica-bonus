@@ -1,51 +1,58 @@
 'use strict';
 
-const isNumber = (num) => {
-  return Number.isNaN(num) && Number.isFinite(num)
-}
+const randomGame = () => {
+  const minNumber = +prompt('Введите минимальный число, от 1 до 100', '');
+  const maxNumber = +prompt('Введите максималный число, от 1 до 100', '');
+  if (Number.isNaN(minNumber) || Number.isNaN(maxNumber) || minNumber === 0 || maxNumber === 0 || minNumber > maxNumber) {
+    alert('Введите число от 1 до 100');
+    return randomGame();
+  };
 
-const playGameRandom = () => {
-  const minNumber = +prompt('Введите минимальный число', '');
-  const maxNumber = +prompt('ВВедите максимальный число', '');
-  const randomNumber = Math.floor(Math.random() * (maxNumber - minNumber + 1) + minNumber);
+  const randomNumber = Math.round(Math.random() * (maxNumber - minNumber + 1) + minNumber);
   console.log('Загаданное число:', randomNumber);
 
-  let attemptGame = Math.round((maxNumber - minNumber) * 0.3);
+  const attemptGame = Math.round((maxNumber - minNumber) * 0.3);
   console.log('Попитка в игре', attemptGame);
-  const storeNumber = [];
-
-  if (minNumber >= 50 && maxNumber <= 100) {
-    attemptGame = 15;
-  }
+  const arrayNumber = [];
+  console.log('arrayNumber: ', arrayNumber);
+  let countNumber = 0;
 
 
-  if (isNumber(minNumber) || isNumber(maxNumber) || minNumber === 0 || maxNumber === 0 || minNumber > maxNumber) {
-    console.log('Введите число! Введите число от 1 до 100');
-  }
 
-  for (let i = 0; i < attemptGame; i++) {
-    let userNumber = +prompt(`Угадай число. У вас осталось ${attemptGame - i} попыток`)
+  while (countNumber < attemptGame) {
+    let userNumber = +prompt(`Угадай число. От ${minNumber} до ${maxNumber}. У вас осталось ${attemptGame - countNumber} попыток`)
 
-    if (isNaN(userNumber)) {
+    if (Number.isNaN(userNumber)) {
       console.log('Введите число!');
-      i--;
-    } else if (storeNumber.includes(userNumber)) {
+      countNumber++;
+      continue;
+    } else if (arrayNumber.includes(userNumber)) {
       console.log('Это число вы уже вводили');
-      --i;
-    }
+      continue;
+    };
 
-    if (userNumber > randomNumber) {
-      console.log('Больше! Попробуйте ещё раз.');
-      storeNumber.push(userNumber);
-    } else if (userNumber < randomNumber) {
-      console.log('Меньше! Попробуйте ещё раз.');
-      storeNumber.push(userNumber);
-    } else if (userNumber === randomNumber) {
-      console.log('Поздравляем, вы угадали число!');
-      return;
+    switch (true) {
+      case userNumber > randomNumber:
+        console.log('Больше! Попробуйте ещё раз.');
+        arrayNumber.push(userNumber);
+        countNumber++;
+        break;
+      case userNumber < randomNumber:
+        console.log('Меньше! Попробуйте ещё раз.');
+        arrayNumber.push(userNumber);
+        countNumber++;
+        break;
+      case userNumber === randomNumber:
+        console.log('Правильно! Вы угадали');
+        return
     }
-
   }
-  console.log('К сожалению, вы не угадали число. Игра окончена.');
+
+  if (arrayNumber.length === attemptGame) {
+    console.log('К сожалению, вы не угадали число. Игра окончена.');
+    return
+  }
+
 }
-playGameRandom()
+
+randomGame();

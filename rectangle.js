@@ -23,8 +23,8 @@ const rectangle = {
 	},
 };
 
-rectangle.widthPerimetr = 5;
-rectangle.heightPerimetr = 5;
+rectangle.widthPerimetr = 10;
+rectangle.heightPerimetr = 10;
 
 console.log(rectangle.rectanglePerimetr);
 console.log(rectangle.rectangleSquare);
